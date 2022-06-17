@@ -5,11 +5,13 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const privateRoute = require("./routes/posts");
 dotevn.config();
+const cors = require("cors");
 const app = express();
 
 //Middlewares
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(cors());
 //Connnect to db
 mongoose.connect(
   process.env.DB_CONNECTION,

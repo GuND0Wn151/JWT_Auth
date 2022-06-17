@@ -6,14 +6,16 @@ const { registerValidation, loginValidation } = require("../validations");
 
 router.post("/register", async (request, res) => {
   const validated = registerValidation(request.body);
-
+  console.log("reigster Page")
   if (validated.error)
 	return res.status(400).send(validated.error.details[0].message);
 
   const checkEmail = await User.findOne({ email: request.body.email });
   if (checkEmail) 
       return res.status(400).send("Email already exists");
-
+  const checkName = await User.findOne({ email: request.body.name });
+  if (checkName) 
+      return res.status(400).send("Name already exists");
 
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(request.body.password, salt);
@@ -44,7 +46,7 @@ router.post('/login',async (request,res)=>{
 	
 
 	const token = jwt.sign({_id:emailExists._id},process.env.TOKEN_SECRET);
-	res.header('auth-token',token).send(`logged in with token ${token}`);
+	res.set('auth-token',token).send({token:token});
 	//res.send("logged in successfully");
 
 
