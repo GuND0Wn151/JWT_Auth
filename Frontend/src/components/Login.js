@@ -1,10 +1,13 @@
 import axios from "axios";
 import React, { useState } from "react";
-
+import {Navigate, useNavigate } from 'react-router-dom';
 function Login() {
-  
+  const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState();
   const handleSubmit = (e) => {
     e.preventDefault();
+    
+
     const data = new FormData(e.target);
     const user={
       email:data.get("email"),
@@ -29,15 +32,20 @@ function Login() {
             },
           }
         ).then((res) => {
-          console.log(res)
+          if (res.data.token) {
+            localStorage.setItem("token", res.data.token);
+            setIsLoggedIn(true);
+            navigate("/");
+          }
         })
         .catch((error)=>{
           console.log(error)
         })
     }
+    
+
   };
-  return (
-    <div style={{ height: "70%", margin: "5% auto auto auto" }}>
+  const html=<div style={{ height: "70%", margin: "5% auto auto auto" }}>
       <div className="mask d-flex align-items-center h-100 gradient-custom-3">
         <div className="container h-90">
           <div className="row d-flex justify-content-center align-items-center h-100">
@@ -101,7 +109,12 @@ function Login() {
         </div>
       </div>
     </div>
-  );
+  return (
+    !isLoggedIn ? html : <Navigate to="/"/>
+    
+    )
+
+  
 }
 
 export default Login;

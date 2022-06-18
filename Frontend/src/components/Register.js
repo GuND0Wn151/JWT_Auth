@@ -3,6 +3,7 @@ import axios from "axios";
 import { Navigate } from "react-router-dom";
 
 function Register() {
+  const [register, setRegister] = React.useState(0);
   function handleSubmit(event) {
     event.preventDefault();
     const data = new FormData(event.target);
@@ -11,7 +12,7 @@ function Register() {
       email: data.get("email"),
       password: data.get("password"),
     };
-    console.log(user)
+    console.log(user);
 
     if (user.name && user.email && user.password) {
       axios
@@ -31,11 +32,15 @@ function Register() {
         )
         .then((result) => {
           console.log(result);
+          if (result.status === 200) {
+            setRegister(1);
+          }
         })
         .catch((err) => {
           console.log(err);
         });
     }
+
     return <Navigate to="/login" />;
   }
   return (
@@ -44,13 +49,11 @@ function Register() {
         <div className="container h-80">
           <div className="row d-flex justify-content-center align-items-center h-180">
             <div className="col-12 col-md-9 col-lg-7 col-xl-6">
-                  
               <div className="card" style={{ borderRadius: "15px" }}>
-                  <h3 style={{margin:"10px auto auto auto"}}>Register User</h3>
+                <h3 style={{ margin: "10px auto auto auto" }}>Register User</h3>
+                {register == 1 ? <Navigate to="/login" /> : null}
                 <div className="card-body p-5">
-                  
                   <form onSubmit={handleSubmit}>
-                        
                     <div className="form-outline mb-4">
                       <input
                         type="text"
@@ -58,7 +61,6 @@ function Register() {
                         className="form-control form-control-lg"
                         placeholder="Name"
                       />
-                      
                     </div>
 
                     <div className="form-outline mb-4">
@@ -68,7 +70,6 @@ function Register() {
                         className="form-control form-control-lg"
                         placeholder="Enter your email"
                       />
-                      
                     </div>
 
                     <div className="form-outline mb-4">
@@ -78,7 +79,6 @@ function Register() {
                         className="form-control form-control-lg"
                         placeholder="Password"
                       />
-                      
                     </div>
 
                     <div className="form-outline mb-4">
@@ -88,7 +88,6 @@ function Register() {
                         className="form-control form-control-lg"
                         placeholder="confirm password"
                       />
-                      
                     </div>
 
                     <div className="form-check d-flex justify-content-center mb-3">
@@ -96,7 +95,6 @@ function Register() {
                         className="form-check-input me-2"
                         type="checkbox"
                         value=""
-                        
                       />
                       <label className="form-check-label">
                         I agree all statements in{" "}

@@ -1,6 +1,12 @@
 import React from 'react'
 
 function Navbar() {
+  const isLoggedIn = localStorage.getItem('token')
+  console.log(isLoggedIn)
+  const handleLogout=()=>{
+    localStorage.removeItem('token')
+
+  }
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
   <div className="container-fluid" >
@@ -11,7 +17,7 @@ function Navbar() {
     <div className="collapse navbar-collapse" id="navbarSupportedContent">
       <ul className="navbar-nav me-auto mb-2 mb-lg-0">
         <li className="nav-item">
-          <a className="nav-link " style={{color:"white"}} aria-current="page" href="#">Home</a>
+          <a className="nav-link " style={{color:"white"}} aria-current="page" href="/">Home</a>
         </li>
         <li className="nav-item">
           <a className="nav-link" style={{color:"white"}} href="#">Link</a>
@@ -25,7 +31,10 @@ function Navbar() {
           <a className="nav-link " style={{color:"white"}}  href="/register">Register</a>
         </li>
         <li className="nav-item">
-          <a className="nav-link" style={{color:"white"}} href="/login">Login</a>
+          {
+              isLoggedIn ? <a className="nav-link" style={{color:"white"}} href="/" onClick={handleLogout}>Logout</a> : <a className="nav-link" style={{color:"white"}} href="/login">Login</a>
+          }
+          
         </li>
         
         
